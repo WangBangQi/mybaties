@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zimo.mybaties.dao.AssistantMapper">
+    <sql id="BaseAllColumns">
+        assistant_id,assistant_num,name
+    </sql>
+    <sql id="table">
+        assistant
+    </sql>
+    <!--void insert(Assistant assistant);-->
+    <insert id="insert" parameterType="com.zimo.mybaties.model.Assistant" keyProperty="assistantId" useGeneratedKeys="true">
+        INSERT INTO <include refid="table"/>
+        (<include refid="BaseAllColumns"/>)
+        VALUES
+        (NULL,#{assistantNum},#{name})
+    </insert>
+
+    <!--Assistant searchByAssId(@Param("assistantId") Integer assistantId);-->
+
+    <select id="searchByAssId" parameterType="java.lang.Integer" resultType="com.zimo.mybaties.model.Assistant">
+        SELECT <include refid="BaseAllColumns" />
+        FROM <include refid="table"/>
+        <where>
+            assistant_id = #{assistantId}
+        </where>
+    </select>
+</mapper>

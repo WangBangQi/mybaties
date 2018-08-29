@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zimo.mybaties.dao.TClassMapper">
+
+    <resultMap id="BaseResultMap" type="com.zimo.mybaties.model.TClass">
+        <constructor>
+            <arg column="class_num"  javaType="string"/>
+            <arg column="class_name" javaType="string"/>
+        </constructor>
+        <id column="class_id" property="classId" jdbcType="INTEGER" javaType="integer"/>
+        <result column="class_num" property="classNum" jdbcType="VARCHAR" javaType="string"/>
+        <result column="class_name" property="className" jdbcType="VARCHAR" javaType="string"/>
+        <association column="assistant_id" property="assistant" select="com.zimo.mybaties.dao.AssistantMapper.searchByAssId"/>
+        <collection property="students" column="class_id" select="com.zimo.mybaties.dao.StudentMapper.listByClassId"/>
+    </resultMap>
+
+    <sql id="base_columns">
+        class_id,class_num,class_name
+    </sql>
+    
+    <sql id="table">
+        t_class
+    </sql>
+    
+    <insert id="insert" parameterType="com.zimo.mybaties.model.TClass" keyProperty="classId" useGeneratedKeys="true">
+        INSERT INTO <include refid="table"/>
+        (class_num,class_name)
+        VALUES
+        (#{classNum},#{className})
+    </insert>
+
+    <!--TClass searchByClassNum(@Param("classNum")String classNum);-->
+    <select id="searchByClassNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+          class_id,
+          class_num ,
+          class_name ,
+          assistant_id
+        FROM t_class
+        <where>
+            class_num = #{classNum}
+        </where>
+    </select>
+
+    <!--TClass searchById(@Param("classId")Integer classId);-->
+    <select id="searchById" parameterType="java.lang.Integer" resultType="com.zimo.mybaties.model.TClass">
+        SELECT
+          class_id AS classId,
+          class_num AS classNum,
+          class_name AS className
+        FROM
+          <include refid="table"/>
+        <where>
+            class_id = #{classId}
+        </where>
+    </select>
+
+</mapper>

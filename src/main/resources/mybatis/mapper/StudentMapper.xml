@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zimo.mybaties.dao.StudentMapper">
+
+    <resultMap id="BaseStudentMap" type="com.zimo.mybaties.model.Student">
+        <id column="stu_id" property="stuId" javaType="integer" jdbcType="INTEGER"/>
+        <result column="stu_num" property="stuNum" javaType="string" jdbcType="VARCHAR"/>
+        <result column="name" property="name" javaType="string" jdbcType="VARCHAR"/>
+        <result column="birth_date" property="birthDate" javaType="long" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <resultMap id="StudentDetailMap" type="com.zimo.mybaties.dto.StudentDto_2">
+        <id column="stu_id" property="stuId" javaType="integer" jdbcType="INTEGER"/>
+        <result column="stu_num" property="stuNum" javaType="string" jdbcType="VARCHAR"/>
+        <result column="name" property="studentName" javaType="string" jdbcType="VARCHAR"/>
+        <result column="birth_date" property="birthDate" javaType="long" jdbcType="BIGINT"/>
+        <association property="tClass" column="class_id"
+                     select="com.zimo.mybaties.dao.TClassMapper.searchById"/>
+        <association property="assistant" column="assistant_id"
+                     select="com.zimo.mybaties.dao.AssistantMapper.searchByAssId"/>
+    </resultMap>
+
+    <sql id="allColumns">
+        stu_id,stu_num,name,birth_date
+    </sql>
+
+    <sql id="table">
+        student
+    </sql>
+
+    <insert id="add" parameterType="com.zimo.mybaties.model.Student">
+        INSERT INTO
+        <include refid="table"/>
+        (stu_id,stu_num,name,birth_date)
+        VALUES
+        (#{stuId},#{stuNum},#{name},#{birthDate})
+    </insert>
+
+    <!--Student searchByStuNum(@Param("stuNum")String stuNum);-->
+    <select id="searchByStuNum" parameterType="java.lang.String" resultType="com.zimo.mybaties.model.Student">
+        SELECT
+            stu_id AS stuId,
+            stu_num AS stuNum,
+            name,
+            birth_date AS birthDate
+        FROM <include refid="table"/>
+        <where>
+            1=1
+            <if test="stuNum != null">
+                AND stu_num = #{stuNum}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- Student searchById(@Param("stuId")Integer stuId);-->
+    <select id="searchById" parameterType="java.lang.Integer" resultMap="BaseStudentMap">
+        SELECT <include refid="allColumns"/>
+        FROM <include refid="table"/>
+        <where>
+            stu_id = #{stuId}
+        </where>
+    </select>
+
+
+    <!--List<Student> listByClassId(@Param("classId") Integer classId);-->
+    <select id="listByClassId" parameterType="java.lang.Integer" resultMap="BaseStudentMap">
+        SELECT <include refid="allColumns"/>
+        FROM <include refid="table"/>
+        <where>
+            class_id = #{classId}
+        </where>
+    </select>
+
+    <!--StudentDto getDetailStudentByStuId(@Param("stuId")Integer stuId);-->
+    <select id="getDetailStudentByStuId" parameterType="java.lang.Integer" resultType="com.zimo.mybaties.dto.StudentDto">
+        SELECT
+        a.stu_id AS stuId,
+        a.stu_num AS stuNum,
+        a.name AS studentName,
+        a.birth_date AS birthDate,
+        b.class_num AS classNum,
+        b.class_name AS className
+        FROM student AS a,t_class AS b
+        <where>
+            a.stu_id = #{stuId}
+            AND a.class_id = b.class_id
+        </where>
+
+    </select>
+
+    <!--StudentDto getDetailStudentByStuId_2(@Param("stuId")Integer stuId);-->
+    <select id="getDetailStudentByStuId_2" resultMap="StudentDetailMap">
+        SELECT
+        a.,
+        b.class_num AS class_num,
+        b.class_name AS class_name,
+        FROM student AS a LEFT JOIN t_class AS b ON a.class_id = b.class_id
+        <where>
+            a.stu_id = #{stuId}
+        </where>
+    </select>
+
+    <!--StudentDto_2 getDetailStudentByStuId_3(@Param("stuId")Integer stuId);-->
+
+    <select id="getDetailStudentByStuId_3" parameterType="java.lang.Integer" resultMap="StudentDetailMap">
+        SELECT  *
+        FROM student
+        WHERE stu_id = #{stuId}
+    </select>
+
+    <!--
+    /**
+     * 模糊查询
+     * @param name
+     * @return
+     */
+    List<Student> listByNameLike(@Param("name")String name);
+    -->
+    <!---->
+    <!--<select id="listByNameLike" parameterType="java.lang.String" resultType="com.zimo.mybaties.model.Student">-->
+        <!---->
+    <!--</select>-->
+
+</mapper>
