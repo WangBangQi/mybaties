@@ -3,7 +3,9 @@ package com.zimo.mybaties.dto;
 import com.zimo.mybaties.model.Assistant;
 import com.zimo.mybaties.model.TClass;
 
-public class StudentDto_2 {
+import java.io.Serializable;
+
+public class StudentDto_2 implements Serializable{
     private Integer stuId;
     private String stuNum;  //学生编号,unique
     private String studentName;

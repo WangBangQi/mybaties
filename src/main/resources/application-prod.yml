@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8080
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -31,8 +31,8 @@ spring:
 #打印SQL
 logging:
   level:
-  #开发环境为debug
-   com.zimo.mybaties: debug
+  #生产环境为info级别
+   com.zimo.mybaties: info
 mybatis:
   #配置mapper文件所在地，在 resources 目录下的mapper目录的*xml文件
   mapper-locations: classpath:mybatis/mapper/*.xml

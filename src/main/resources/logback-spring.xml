@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <property name = "logsPath" value="/Users/captain/logs/tomcat/sell"/>
+    <property name = "logsFormat" value="%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level === [%thread] %-36logger{36} : - %msg%n"/>
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${logsFormat}</pattern>
+        </layout>
+    </appender>
+
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- levelfilter:级别过滤器。根据日志级别进行过滤。如果日志级别等于配置级别level，则执行onMatch的；否则执行onMismatch -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- onMatch、onMismatch里内容要大写 -->
+            <!-- DENY：日志将立即被抛弃，不再经过其他过滤器，本appender也不进行处理 -->
+            <!-- ACCEPT：日志被立即处理，不再经过其他过滤器-->
+            <!-- NEUTRAL：下一个过滤器继续过滤，若为最后一个过滤器且通过，则appender进行处理-->
+            <!-- 只会输出INFO级别的信息到文件中-->
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- ThresholdFilter临界值过滤器，过滤掉低于指定临界值的日志-->
+        <!-- 当日志级别等于或高于临界值时，过滤器返回NEUTRAL；当日志级别低于临界值时，日志会被拒绝。 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>${logsFormat}</pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${logsPath}/info.%d.log</fileNamePattern>
+            <!--保存180天的日志-->
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>${logsFormat}</pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${logsPath}/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <root level="info">
+        <appender-ref ref="consoleLog" />
+        <appender-ref ref="fileInfoLog" />
+        <appender-ref ref="fileErrorLog" />
+    </root>
+</configuration>

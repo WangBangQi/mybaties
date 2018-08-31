@@ -1,11 +1,12 @@
 package com.zimo.mybaties.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 班级
  */
-public class TClass {
+public class TClass implements Serializable{
     private Integer classId;
     private String classNum;  //班级编号
     private String className;   //班级名称

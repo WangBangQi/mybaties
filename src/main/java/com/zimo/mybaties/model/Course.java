@@ -1,9 +1,11 @@
 package com.zimo.mybaties.model;
 
+import java.io.Serializable;
+
 /**
  * 课程
  */
-public class Course {
+public class Course implements Serializable {
     private Integer id;
     private String courseNum;
     private String courseName;

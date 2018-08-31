@@ -1,9 +1,11 @@
 package com.zimo.mybaties.model;
 
+import java.io.Serializable;
+
 /**
  * 辅导员
  */
-public class Assistant {
+public class Assistant implements Serializable{
     private Integer assistantId;
     private String assistantNum;    //辅导员编号
     private String name;
