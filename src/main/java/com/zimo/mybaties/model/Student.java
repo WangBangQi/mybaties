@@ -8,7 +8,7 @@ public class Student {
     private String stuNum;  //学生编号,unique
     private String name;
     private Long birthDate;
-
+    private StudentRole studentRole; //学生的角色
     public Student() {
     }
 
@@ -50,6 +50,14 @@ public class Student {
         this.birthDate = birthDate;
     }
 
+    public StudentRole getStudentRole() {
+        return studentRole;
+    }
+
+    public void setStudentRole(StudentRole studentRole) {
+        this.studentRole = studentRole;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -57,6 +65,7 @@ public class Student {
                 ", stuNum='" + stuNum + '\'' +
                 ", name='" + name + '\'' +
                 ", birthDate=" + birthDate +
+                ", studentRole=" + studentRole +
                 '}';
     }
 }

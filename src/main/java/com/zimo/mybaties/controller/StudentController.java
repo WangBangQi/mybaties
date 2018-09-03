@@ -1,10 +1,12 @@
 package com.zimo.mybaties.controller;
 
 
+import com.zimo.mybaties.annoation.Access;
+import com.zimo.mybaties.annoation.Token;
 import com.zimo.mybaties.dao.StudentMapper;
 import com.zimo.mybaties.dto.StudentDto_2;
 import com.zimo.mybaties.model.Student;
-import com.zimo.mybaties.service.StudentService;
+import com.zimo.mybaties.service.StudentServiceImpl;
 import com.zimo.mybaties.util.Result;
 import com.zimo.mybaties.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ public class StudentController {
     @Resource
     StudentMapper studentMapper;
     @Autowired
-    StudentService studentService;
+    StudentServiceImpl studentServiceImpl;
 
     @RequestMapping("/get")
     public Result searchByNum(@RequestParam("stuNum")String stuNum){
@@ -30,7 +32,7 @@ public class StudentController {
 
     @RequestMapping(value = "/{stu_id}")
     public Result searchById(@PathVariable("stu_id")Integer studentId){
-        return ResultUtil.success(studentService.getStudentDetail_2ByStuId(studentId),"获取学生信息");
+        return ResultUtil.success(studentServiceImpl.getStudentDetail_2ByStuId(studentId),"获取学生信息");
     }
 
     @RequestMapping("/id")
@@ -39,5 +41,10 @@ public class StudentController {
         return ResultUtil.success(studentDto_2,"获取学生信息");
     }
 
+    @Access(permission = "student_eat")
+    @RequestMapping("/eat/{stuId}")
+    public Result eat(@PathVariable("stuId")Integer stuId){
+        return ResultUtil.success();
+    }
 
 }

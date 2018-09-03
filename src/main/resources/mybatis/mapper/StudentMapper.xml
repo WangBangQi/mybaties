@@ -7,6 +7,7 @@
         <result column="stu_num" property="stuNum" javaType="string" jdbcType="VARCHAR"/>
         <result column="name" property="name" javaType="string" jdbcType="VARCHAR"/>
         <result column="birth_date" property="birthDate" javaType="long" jdbcType="BIGINT"/>
+        <association property="studentRole" column="student_role_id" select="com.zimo.mybaties.dao.StudentRoleMapper.get"/>
     </resultMap>
 
     <resultMap id="StudentDetailMap" type="com.zimo.mybaties.dto.StudentDto_2">
@@ -21,7 +22,7 @@
     </resultMap>
 
     <sql id="allColumns">
-        stu_id,stu_num,name,birth_date
+        stu_id,stu_num,name,birth_date,student_role_id
     </sql>
 
     <sql id="table">
@@ -118,8 +119,34 @@
     List<Student> listByNameLike(@Param("name")String name);
     -->
     <!---->
-    <!--<select id="listByNameLike" parameterType="java.lang.String" resultType="com.zimo.mybaties.model.Student">-->
-        <!---->
-    <!--</select>-->
+    <select id="listByNameLike" parameterType="java.lang.String" resultMap="BaseStudentMap">
+        SELECT *
+        FROM student
+        <where>
+            <if test="name!=null and name!='' "> name like CONCAT('%',#{name},'%')</if>
+        </where>
+    </select>
 
+    <!--List<Student> listByName(@Param("name")String name);-->
+    <select id="listByName" parameterType="java.lang.String" resultMap="BaseStudentMap">
+        SELECT *
+        FROM student
+        <where>
+            <if test="name!=null and name!='' "> name  =  #{name}</if>
+        </where>
+    </select>
+
+    <!--List<Student> listByStuNumLike(@Param("stuNum")String stuNum);-->
+    <select id="listByStuNumLike" parameterType="java.lang.String" resultMap="BaseStudentMap">
+        SELECT *
+        FROM student
+        WHERE stu_num like CONCAT('%',#{stuNum},'%') ORDER BY birth_date ASC ,name limit 100,20
+    </select>
+
+    <!--Student getByStuNum(@Param("stuNum")String stuNum);-->
+    <select id="getByStuNum" parameterType="java.lang.String" resultMap="BaseStudentMap">
+        SELECT *
+        FROM student
+        WHERE stu_num =#{stuNum}
+    </select>
 </mapper>

@@ -1,5 +1,8 @@
 package com.zimo.mybaties.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MineService {
     /**
      * 冰雹猜想
@@ -24,11 +27,20 @@ public class MineService {
 
 
     public static void main(String arg[]){
-        MineService.iceImage(197196131161010086l);
-        System.out.println(printII());
+//        MineService.iceImage(197196131161010086l);
+//        System.out.println(printII());
+        Integer value = 2;
+        System.out.println("value: "+value);
+        System.out.println("value reversed :" +Integer.reverse(value));
+        System.out.println("value Integer max: "+Integer.MAX_VALUE);
+        System.out.println("value signum :"+Integer.signum(value)); //正数还是负数
+        List<String> list = new ArrayList<>();
+        list.add("e");
     }
     public static double printII(){
         double s =( 5800/4.0)*5;
         return s;
     }
+
+
 }

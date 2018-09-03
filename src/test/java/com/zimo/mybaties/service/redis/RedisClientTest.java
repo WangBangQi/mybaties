@@ -1,9 +1,7 @@
 package com.zimo.mybaties.service.redis;
 
-import com.zimo.mybaties.dao.StudentMapper;
 import com.zimo.mybaties.dto.StudentDto_2;
-import com.zimo.mybaties.model.Student;
-import com.zimo.mybaties.service.StudentService;
+import com.zimo.mybaties.service.StudentServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,11 +19,11 @@ public class RedisClientTest {
     RedisClient redisClient;
 
     @Autowired
-    StudentService studentService;
+    StudentServiceImpl studentServiceImpl;
 
     @Test
     public void setStr() throws Exception {
-        StudentDto_2 student  = studentService.getStudentDetail_2ByStuId(22);
+        StudentDto_2 student  = studentServiceImpl.getStudentDetail_2ByStuId(22);
         Assert.assertNotNull(student);
         String key = createKey(student);
         System.out.println(key);
@@ -40,7 +38,7 @@ public class RedisClientTest {
 
     @Test
     public void getStr() throws Exception {
-        StudentDto_2 value = (StudentDto_2) redisClient.getStr(createKey(studentService.getStudentDetail_2ByStuId(22)));
+        StudentDto_2 value = (StudentDto_2) redisClient.getStr(createKey(studentServiceImpl.getStudentDetail_2ByStuId(22)));
         Assert.assertNotNull("竟然空了",value);
         assertEquals(StudentDto_2.class.getName(),value.getClass().getName());
         assertEquals("12310",value.getStuNum());

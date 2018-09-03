@@ -17,27 +17,35 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StudentMapperTest {
+
     @SuppressWarnings("all")
     @Autowired
     StudentMapper studentMapper;
 
     @Test
     public void add() throws Exception {
-        for (int i=10;i<20;i++)
-        studentMapper.add(new Student("123"+i,"天涯"+i,777524356000l));
+        for (int i=1000;i<1500;i++)
+            for (int j=300;j<400;j++) {
+                studentMapper.add(new Student("123" + i+j, "天涯" + i+j, 777524356000l+i*j));
+            }
     }
 
     @Test
     public void searchByStuNum()throws Exception{
         Student student = studentMapper.searchByStuNum("1231");
         Assert.assertNotNull(student);
-        System.out.println(student.toString());
+        System.out.println("中间的数据");
+        studentMapper.searchByStuNum("123105116");
+        System.out.println("最后一条数据");
+        studentMapper.searchByStuNum("123109179");
+
     }
 
     @Test
     public void searchById()throws Exception{
         Student student = studentMapper.searchById(11);
         Assert.assertNotNull(student);
+        Assert.assertNotNull(student.getStudentRole());
         System.out.println(student.toString());
     }
 
@@ -73,5 +81,34 @@ public class StudentMapperTest {
         Assert.assertEquals("1921083145",studentDto_2.gettClass().getClassNum());
         Assert.assertEquals("数学",studentDto_2.gettClass().getClassName());
         Assert.assertNull(studentDto_2.gettClass().getAssistant());
+    }
+
+    @Test
+    public void listByNameLike()throws Exception{
+        List<Student> students = studentMapper.listByNameLike("天涯109");
+        Assert.assertNotNull(students);
+        assertEquals(true,students.size()>=1);
+        System.out.println("查询到的学生的个数为:"+students.size());
+    }
+
+    @Test
+    public void listByName()throws Exception{
+        List<Student > students = studentMapper.listByName("天涯109177");
+        Assert.assertNotNull(students);
+    }
+
+
+    @Test
+    public void listByStuNumLike()throws Exception{
+        List<Student> students = studentMapper.listByStuNumLike("12310");
+        Assert.assertNotNull(students);
+        assertEquals(true,students.size()>=1);
+        System.out.println("查询到的学生的个数为:"+students.size());
+    }
+
+    @Test
+    public void getByStuNum()throws Exception{
+        Student student = studentMapper.getByStuNum("123108125");
+        Assert.assertNotNull(student);
     }
 }

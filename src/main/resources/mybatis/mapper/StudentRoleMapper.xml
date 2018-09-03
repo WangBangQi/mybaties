@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zimo.mybaties.dao.StudentRoleMapper">
+
+    <resultMap id="StudentRoleMap" type="com.zimo.mybaties.model.StudentRole">
+        <id column="student_role_id" property="id" jdbcType="INTEGER" javaType="integer"/>
+        <result column="name" property="name" jdbcType="VARCHAR" javaType="string"/>
+        <result column="student_role_enum" property="studentRoleEnum" jdbcType="INTEGER" javaType="integer"/>
+        <collection property="roles" column="student_role_id" select="com.zimo.mybaties.dao.RoleMapper.getListByStudentRoleId"/>
+
+    </resultMap>
+
+
+    <sql id="BaseAllColumns">
+        student_role_id,name,student_role_enum
+    </sql>
+
+    <sql id="table">
+        student_role
+    </sql>
+
+    <select id="get" parameterType="java.lang.Integer" resultMap="StudentRoleMap">
+        SELECT
+        student_role_id,name,student_role_enum
+        FROM <include refid="table"/>
+        <where>
+            student_role_id = #{studentRoleId}
+        </where>
+    </select>
+
+</mapper>

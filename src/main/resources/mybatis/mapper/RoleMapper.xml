@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zimo.mybaties.dao.RoleMapper">
+    <sql id="AllColumns">
+        role_id,role_name,role_desc
+    </sql>
+    <sql id="table">
+        role
+    </sql>
+
+    <insert id="add" parameterType="com.zimo.mybaties.model.Role" useGeneratedKeys="true" keyColumn="roleId">
+        INSERT INTO <include refid="table"/>
+        (<include refid="AllColumns"/>)
+        VALUES
+        (#{roleId},#{roleName},#{roleDesc})
+    </insert>
+
+
+    <!--Role get(@Param("roleId") Integer roleId);-->
+
+    <select id="get" parameterType="java.lang.Integer" resultType="com.zimo.mybaties.model.Role">
+        SELECT <include refid="AllColumns"/>
+        FROM <include refid="table"/>
+        <where>
+            role_id = #{roleId};
+        </where>
+    </select>
+
+    <!--List<Role> getListByStudentRoleId(@Param("studentRoleId")Integer studentRoleId);-->
+    <select id="getListByStudentRoleId" parameterType="java.lang.Integer" resultType="com.zimo.mybaties.model.Role">
+        SELECT
+          a.*
+        FROM role as a ,student_cadre as b
+        WHERE
+        b.student_role_id = #{studentRoleId}
+        AND b.role_id = a.role_id
+    </select>
+</mapper>
